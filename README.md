@@ -37,7 +37,7 @@ streamlit run src/01_login.py
 ```
 
 During execution, you can check the demo screen from the following page.  
-http://localhost:8501/chat
+http://localhost:8501
 
 ## Demo Video
 
