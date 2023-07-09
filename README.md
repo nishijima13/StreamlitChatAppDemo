@@ -8,13 +8,7 @@ Since it is the minimum necessary content, please modify it as necessary and use
 ## Install
 
 ```bash
-pip install streamlit==1.24.0
-pip install streamlit-authenticator==0.2.2
-pip install streamlit-autorefresh==1.0.1
-pip install extra-streamlit-components==0.1.56
-pip install watchdog==3.0.0
-pip install numpy==1.25.0
-pip install Pillow==9.5.0
+pip install -r requirements.txt
 ```
 
 ## Setting
