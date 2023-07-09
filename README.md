@@ -5,6 +5,9 @@ Chat sample code between users using Streamlit.
 This project will be the code to chat between users by Streamlit.
 Since it is the minimum necessary content, please modify it as necessary and use it.
 
+Demo is as follows.
+![Demo](result/result.gif)
+
 ## Install
 
 ```bash
@@ -33,10 +36,6 @@ streamlit run src/01_login.py
 During execution, you can check the demo screen from the following page.  
 http://localhost:8501
 
-## Demo Video
-
-![Demo](result/result.gif)
-
 ## How to use
 
 1. Register as a user from the "register user" page.  
@@ -46,7 +45,7 @@ http://localhost:8501
     Also, the user set in setting file is registered as an initial user.  
 2. Log in as a registered user from the "login" page.  
     A message similar to the one below is displayed.  
-    ```Welcome [USER1].```  
+    ```Welcome [user name].```  
 3. If necessary, register your own icon image from the "change icon" page.  
     Icon images are saved in the folder specified in setting file.  
 4. Chat from the "chat" page.  
