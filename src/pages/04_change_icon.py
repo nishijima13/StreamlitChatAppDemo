@@ -20,7 +20,11 @@ if (
     )
     # Show current icon
     user_info = db.get_user_info(st.session_state[const.SESSION_INFO_USERNAME])
-    image_path = user_info[4]
+    if user_info is None:
+        image_path = None
+        st.error(const.ERR_MSG_GET_USER_INFO)
+    else:
+        image_path = user_info[4]
     if image_path is not None and os.path.isfile(image_path):
         image = Image.open(image_path)
         st.image(image, caption="current icon")

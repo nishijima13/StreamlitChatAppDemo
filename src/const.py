@@ -24,6 +24,8 @@ USER_SETTINGS = {
 }
 # Error messages
 ERR_MSG_UNEXPECTED = "An unexpected error has occurred."
+ERR_MSG_GET_USER_INFO = "Failed to get user information."
+ERR_MSG_GET_CHAT_LOGS = "Failed to get chat logs."
 # Chat settings
 MAX_CHAT_LOGS = 100
 # Auto refresh settings[ms]
