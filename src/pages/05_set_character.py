@@ -23,10 +23,15 @@ elif (
         db.update_character_persona(text)
         st.success("Character persona set successfully.")
         st.write("Current persona:")
-        st.write(text)
+        text_list = text.splitlines()
+        for tcon in text_list:
+            st.write(tcon)
     else:
         if len(persona) > 0:
             st.write("Current persona:")
+            text_list = persona.splitlines()
+            for pcon in text_list:
+                st.write(pcon)
             st.write(persona)
         else:
             st.write("No persona is set.")

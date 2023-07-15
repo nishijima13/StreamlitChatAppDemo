@@ -19,9 +19,6 @@ CHATBOT_PERSONA = """
 Please become a character of the following setting and have a conversation.
 
 {persona}
-
-Past conversations are passed in the following format:
-Username > Conversation content.
 """
 
 st.title("Chat")
@@ -94,7 +91,10 @@ if (
                         messages.append({"role": "assistant", "content": log_message})
                     else:
                         messages.append(
-                            {"role": "user", "content": log_name + "> " + log_message}
+                            {
+                                "role": "user",
+                                "content": log_name + " said " + log_message,
+                            }
                         )
                     if len(messages) > const.MAX_CONVERSATION_BUFFER:
                         messages.pop(1)
@@ -138,8 +138,8 @@ if (
 
         if persona is not None:
             # Show chatbot message
-            messages.append({"role": "user", "content": name + "> " + user_msg})
-            messages.append({"role": "assistant", "content": const.CHATBOT_NAME + "> "})
+            messages.append({"role": "user", "content": name + " said " + user_msg})
+            messages.append({"role": "assistant", "content": name + " said "})
             completion = openai.ChatCompletion.create(
                 model=const.MODEL_NAME,
                 messages=messages,

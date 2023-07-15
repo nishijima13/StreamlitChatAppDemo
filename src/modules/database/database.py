@@ -181,3 +181,10 @@ class Database:
                     (persona,),
                 )
             conn.commit()
+
+    def delete_all_chat_logs(self):
+        # Delete all chat logs from database
+        with sqlite3.connect(self.db_path) as conn:
+            with AutoCloseCursur(conn) as cur:
+                cur.execute("DELETE FROM chat_logs;")
+            conn.commit()
