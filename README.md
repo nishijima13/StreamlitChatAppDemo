@@ -32,9 +32,17 @@ You can configure the following settings.
 ```bash
 streamlit run src/01_login.py
 ```
+If successful, the following log will be output.
+```
+  You can now view your Streamlit app in your browser.
+
+  Local URL: http://localhost:8501
+  Network URL: http://xxxx.xxxx.xxxx.xxxx:8501
+```
 
 During execution, you can check the demo screen from the following page.  
 http://localhost:8501
+
 
 ## How to use
 
@@ -43,9 +51,26 @@ http://localhost:8501
     ```User registered successfully. Please login to continue.```  
     User information is registered in the local DB.  
     Also, the user set in setting file is registered as an initial user.  
+    The email address is not used for anything, so anything suitable is fine.  
 2. Log in as a registered user from the "login" page.  
     A message similar to the one below is displayed.  
     ```Welcome [user name].```  
 3. If necessary, register your own icon image from the "change icon" page.  
     Icon images are saved in the folder specified in setting file.  
 4. Chat from the "chat" page.  
+
+## Add characters by ChatGPT(gpt-3.5-turbo) to chat
+
+Procedure if you want to add a character by ChatGPT to chat.
+
+## Run
+
+```
+export OPENAI_API_KEY="YOUR_API_KEY"
+streamlit run src/01_login.py -- --use_chatbot
+```
+
+## How to use
+
+It's basically the same as normal chat, but you can set your character's personality from the "set character" page.  
+When you send a message in chat, the character will reply.  

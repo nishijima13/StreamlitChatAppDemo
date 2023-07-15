@@ -34,6 +34,24 @@ class Database:
                 cur.execute(
                     "CREATE TABLE IF NOT EXISTS chat_logs(chat_id, username, name, message, sent_time);"
                 )
+                cur.execute(
+                    "CREATE TABLE IF NOT EXISTS openai_settings(use_character);"
+                )
+                cur.execute(
+                    """
+                    INSERT INTO openai_settings (use_character)
+                    SELECT true
+                    WHERE NOT EXISTS (SELECT 1 FROM openai_settings)
+                    """
+                )
+                cur.execute("CREATE TABLE IF NOT EXISTS character(persona);")
+                cur.execute(
+                    """
+                    INSERT INTO character (persona)
+                    SELECT ''
+                    WHERE NOT EXISTS (SELECT 1 FROM character)
+                    """
+                )
             conn.commit()
 
     def insert_user_info(
@@ -123,5 +141,43 @@ class Database:
                 cur.execute(
                     "UPDATE user_infos SET image_path = ? WHERE username = ?;",
                     (image_path, username),
+                )
+            conn.commit()
+
+    def get_openai_settings_use_character(self):
+        # Get openai settings use character from database
+        ret_row = None
+        with sqlite3.connect(self.db_path) as conn:
+            with AutoCloseCursur(conn) as cur:
+                cur.execute("SELECT use_character FROM openai_settings;")
+                ret_row = cur.fetchone()
+        return ret_row
+
+    def update_openai_settings_use_character(self, use_character: bool):
+        # Update openai settings use character in database
+        with sqlite3.connect(self.db_path) as conn:
+            with AutoCloseCursur(conn) as cur:
+                cur.execute(
+                    "UPDATE openai_settings SET use_character = ?;",
+                    (use_character,),
+                )
+            conn.commit()
+
+    def get_character_persona(self):
+        # Get character persona from database
+        ret_row = None
+        with sqlite3.connect(self.db_path) as conn:
+            with AutoCloseCursur(conn) as cur:
+                cur.execute("SELECT persona FROM character;")
+                ret_row = cur.fetchone()
+        return ret_row
+
+    def update_character_persona(self, persona: str):
+        # Update character persona in database
+        with sqlite3.connect(self.db_path) as conn:
+            with AutoCloseCursur(conn) as cur:
+                cur.execute(
+                    "UPDATE character SET persona = ?;",
+                    (persona,),
                 )
             conn.commit()

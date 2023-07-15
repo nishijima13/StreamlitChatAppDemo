@@ -4,12 +4,26 @@ import const
 import datetime
 import os
 from PIL import Image
+import openai
 from streamlit_autorefresh import st_autorefresh
 from modules import common
 from modules.authenticator import common_auth
 from modules.database import database
 
 CHAT_ID = "0"
+persona = None
+llm = None
+use_chatbot = False
+
+CHATBOT_PERSONA = """
+Please become a character of the following setting and have a conversation.
+
+{persona}
+
+Past conversations are passed in the following format:
+Username > Conversation content.
+"""
+
 st.title("Chat")
 
 authenticator = common_auth.get_authenticator()
@@ -18,8 +32,25 @@ if (
     common.check_if_exists_in_session(const.SESSION_INFO_AUTH_STATUS)
     and st.session_state[const.SESSION_INFO_AUTH_STATUS]
 ):
-    user_infos = {}
+    messages = []
+    # Get persona
+    tmp_use_chatbot = db.get_openai_settings_use_character()[0]
+    if tmp_use_chatbot == 1:
+        persona = db.get_character_persona()[0]
+        messages.append(
+            {"role": "system", "content": CHATBOT_PERSONA.format(persona=persona)}
+        )
 
+    # Get chatbot settings
+    openai_api_key = os.getenv("OPENAI_API_KEY")
+    if openai_api_key is None:
+        openai.api_key = openai_api_key
+        persona = None
+        st.error(
+            "OPENAI_API_KEY is not set in the environment variables. Please contact the administrator."
+        )
+
+    user_infos = {}
     username = st.session_state[const.SESSION_INFO_USERNAME]
     name = st.session_state[const.SESSION_INFO_NAME]
     user_msg = st.chat_input("Enter your message")
@@ -56,8 +87,22 @@ if (
                     log_name, avatar=user_infos[log_username]["image"]
                 ):
                     st.write(log_name + "> " + log_message)
+
+                if persona is not None:
+                    # Added conversation to give to chatbot.
+                    if log_username == const.CHATBOT_USERNAME:
+                        messages.append({"role": "assistant", "content": log_message})
+                    else:
+                        messages.append(
+                            {"role": "user", "content": log_name + "> " + log_message}
+                        )
+                    if len(messages) > const.MAX_CONVERSATION_BUFFER:
+                        messages.pop(1)
+
     else:
         st.error(const.ERR_MSG_GET_CHAT_LOGS)
+
+    # Show user message
     if user_msg:
         # Show new chat message
         db.insert_chat_log(
@@ -91,9 +136,28 @@ if (
         with st.chat_message(name, avatar=user_infos[username]["image"]):
             st.write(name + "> " + user_msg)
 
+        if persona is not None:
+            # Show chatbot message
+            messages.append({"role": "user", "content": name + "> " + user_msg})
+            messages.append({"role": "assistant", "content": const.CHATBOT_NAME + "> "})
+            completion = openai.ChatCompletion.create(
+                model=const.MODEL_NAME,
+                messages=messages,
+            )
+            assistant_msg = completion["choices"][0]["message"]["content"]
+            with st.chat_message(const.CHATBOT_NAME, avatar=const.CHATBOT_NAME):
+                st.write(const.CHATBOT_NAME + "> " + assistant_msg)
+            db.insert_chat_log(
+                chat_id=CHAT_ID,
+                username=const.CHATBOT_USERNAME,
+                name=const.CHATBOT_NAME,
+                message=assistant_msg,
+                sent_time=datetime.datetime.now(),
+            )
+
     # Refresh the page every (REFRESH_INTERVAL) seconds
     count = st_autorefresh(
         interval=const.REFRESH_INTERVAL, limit=None, key="fizzbuzzcounter"
     )
 else:
-    st.error("You are not logged in.")
+    st.error("You are not logged in. Please go to the login page.")

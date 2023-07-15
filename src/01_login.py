@@ -1,8 +1,30 @@
 # This page is used to login to the application
 import streamlit as st
+import argparse
 import const
 from modules import common
 from modules.authenticator import common_auth
+from modules.database import database
+
+# Get the command line arguments
+parser = argparse.ArgumentParser(
+    description="This page is used to login to the application",
+)
+parser.add_argument(
+    "--use_chatbot",
+    help="Use chatbot",
+    action="store_true",
+)
+args = parser.parse_args()
+use_chatbot = args.use_chatbot
+
+# Update the use_chatbot setting
+db = database.Database()
+current_use_chatbot = db.get_openai_settings_use_character()
+if int(use_chatbot) != current_use_chatbot[0]:
+    db.update_openai_settings_use_character(use_chatbot)
+
+st.title("Login")
 
 authenticator = common_auth.get_authenticator()
 name, authentication_status, username = authenticator.login("Login", "main")

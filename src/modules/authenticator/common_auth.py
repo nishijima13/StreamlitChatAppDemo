@@ -15,16 +15,19 @@ def get_authenticator(
     # Get authenticator
     db = database.Database(db_path)
     user_infos = db.get_all_user_infos()
-    if len(user_infos) == 0:
+    init_user_names = [uinfo["username"] for uinfo in const.USER_SETTINGS]
+    all_user_names = [uinfo[0] for uinfo in user_infos]
+    for uinfo in const.USER_SETTINGS:
         # Insert admin user info
-        db.insert_user_info(
-            const.USER_SETTINGS["username"],
-            const.USER_SETTINGS["email"],
-            const.USER_SETTINGS["name"],
-            stauth.Hasher([const.USER_SETTINGS["password"]]).generate()[0],
-            const.USER_SETTINGS["image_path"],
-        )
-        user_infos = db.get_all_user_infos()
+        if uinfo["username"] not in all_user_names:
+            db.insert_user_info(
+                uinfo["username"],
+                uinfo["email"],
+                uinfo["name"],
+                stauth.Hasher([uinfo["password"]]).generate()[0],
+                uinfo["image_path"],
+            )
+    user_infos = db.get_all_user_infos()
     # Convert user_infos to credentials
     credentials = {"usernames": {}}
     for uinfo in user_infos:
