@@ -32,7 +32,6 @@ elif (
             text_list = persona.splitlines()
             for pcon in text_list:
                 st.write(pcon)
-            st.write(persona)
         else:
             st.write("No persona is set.")
 else:
