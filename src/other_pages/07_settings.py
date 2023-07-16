@@ -1,9 +1,10 @@
 import streamlit as st
+from st_pages import add_page_title
 import const
 from modules.database import database
 from modules import common
 
-st.title("Settings")
+add_page_title()
 
 db = database.Database()
 

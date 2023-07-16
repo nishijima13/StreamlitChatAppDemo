@@ -1,5 +1,6 @@
 # This page is for chat
 import streamlit as st
+from st_pages import add_page_title
 import const
 import datetime
 import os
@@ -21,7 +22,7 @@ Please become a character of the following setting and have a conversation.
 {persona}
 """
 
-st.title("Chat")
+add_page_title()
 
 authenticator = common_auth.get_authenticator()
 db = database.Database()

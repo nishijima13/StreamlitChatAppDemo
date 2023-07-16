@@ -2,6 +2,7 @@ streamlit==1.24.1
 streamlit-authenticator==0.2.2
 streamlit-autorefresh==1.0.1
 extra-streamlit-components==0.1.56
+st-pages==0.4.3
 watchdog==3.0.0
 numpy==1.25.0
 Pillow==9.5.0

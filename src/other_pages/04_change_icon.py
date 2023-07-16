@@ -1,6 +1,7 @@
 # This page is used to change the icon of the user.
 import os
 import streamlit as st
+from st_pages import add_page_title
 import const
 import numpy as np
 from PIL import Image
@@ -8,9 +9,10 @@ from modules import common
 from modules.authenticator import common_auth
 from modules.database import database
 
+# Setting paage title
+add_page_title()
 authenticator = common_auth.get_authenticator()
 db = database.Database()
-st.title("Change icon")
 if (
     common.check_if_exists_in_session(const.SESSION_INFO_AUTH_STATUS)
     and st.session_state[const.SESSION_INFO_AUTH_STATUS]

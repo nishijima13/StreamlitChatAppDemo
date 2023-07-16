@@ -1,10 +1,15 @@
 # This page is used to login to the application
 import streamlit as st
+from st_pages import add_page_title
 import argparse
 import const
 from modules import common
 from modules.authenticator import common_auth
 from modules.database import database
+
+# Setting page title
+common.set_pages()
+add_page_title()
 
 # Get the command line arguments
 parser = argparse.ArgumentParser(
@@ -24,8 +29,6 @@ current_use_chatbot = db.get_openai_settings_use_character()
 if int(use_chatbot) != current_use_chatbot[0]:
     db.update_openai_settings_use_character(use_chatbot)
 
-st.title("Login")
-
 authenticator = common_auth.get_authenticator()
 name, authentication_status, username = authenticator.login("Login", "main")
 
@@ -38,6 +41,7 @@ if (
         authenticator.logout("Logout", "main", key="unique_key")
         st.write(f"Welcome *{st.session_state[const.SESSION_INFO_NAME]}*")
         st.write("Go to the chat page and start chatting!")
+        common.set_pages()
     else:
         st.error("User name is not set in session state.")
 elif common.check_if_exists_in_session(const.SESSION_INFO_AUTH_STATUS):

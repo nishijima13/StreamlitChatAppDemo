@@ -1,10 +1,11 @@
 import os
 import streamlit as st
+from st_pages import add_page_title
 import const
 from modules import common
 from modules.database import database
 
-st.title("Set character's persona")
+add_page_title()
 db = database.Database()
 
 current_use_chatbot = db.get_openai_settings_use_character()
