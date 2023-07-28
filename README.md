@@ -1,5 +1,7 @@
 # StreamlitChatAppDemo
 
+![head_img](data/robot_image.jpeg)
+
 Chat sample code between users using Streamlit.
 
 This project will be the code to chat between users by Streamlit.
