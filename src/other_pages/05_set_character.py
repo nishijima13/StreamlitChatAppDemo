@@ -10,7 +10,7 @@ db = database.Database()
 
 current_use_chatbot = db.get_openai_settings_use_character()
 
-if current_use_chatbot[0] == 0:
+if current_use_chatbot == 0:
     st.error("You have not enabled the chatbot. Please contact the administrator.")
 elif (
     common.check_if_exists_in_session(const.SESSION_INFO_AUTH_STATUS)

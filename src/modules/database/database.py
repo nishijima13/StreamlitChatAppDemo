@@ -145,16 +145,26 @@ class Database:
             conn.commit()
 
     def get_openai_settings_use_character(self):
+        """Get openai settings use character from database.
+
+        Returns:
+            (current_use_chatbot) bool : True if use character, False otherwise.
+        """
         # Get openai settings use character from database
-        ret_row = None
+        current_use_chatbot = None
         with sqlite3.connect(self.db_path) as conn:
             with AutoCloseCursur(conn) as cur:
                 cur.execute("SELECT use_character FROM openai_settings;")
                 ret_row = cur.fetchone()
-        return ret_row
+                current_use_chatbot = ret_row[0]
+        return current_use_chatbot
 
     def update_openai_settings_use_character(self, use_character: bool):
-        # Update openai settings use character in database
+        """Update openai settings use character in database.
+
+        Args:
+            use_character (bool): True if use character, False otherwise.
+        """
         with sqlite3.connect(self.db_path) as conn:
             with AutoCloseCursur(conn) as cur:
                 cur.execute(

@@ -7,7 +7,8 @@ from modules.database import database
 db = database.Database()
 
 def set_pages():
-    # Set the pages
+    """Set the pages to be shown in the sidebar.
+    """
     default_pages = [
         Page("src/01_login.py", "Login/Logout", "🏠"),
         Page("src/other_pages/02_register_user.py", "Register user", "📝"),
@@ -22,7 +23,7 @@ def set_pages():
     
     # Check if chatbot is enabled
     current_use_chatbot = db.get_openai_settings_use_character()
-    if current_use_chatbot[0] == 1:
+    if current_use_chatbot == 1:
         pages.append(Page("src/other_pages/05_set_character.py", "Set character", "🤖"))
 
     # Check if user is logged in

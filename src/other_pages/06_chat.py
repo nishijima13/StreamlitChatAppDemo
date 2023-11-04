@@ -32,7 +32,7 @@ if (
 ):
     messages = []
     # Get persona
-    tmp_use_chatbot = db.get_openai_settings_use_character()[0]
+    tmp_use_chatbot = db.get_openai_settings_use_character()
     if tmp_use_chatbot == 1:
         persona = db.get_character_persona()[0]
         messages.append(
