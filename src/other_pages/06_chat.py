@@ -31,7 +31,7 @@ if (
     and st.session_state[const.SESSION_INFO_AUTH_STATUS]
 ):
     messages = []
-    # Get persona
+    # Check if chatbot is enabled
     tmp_use_chatbot = db.get_openai_settings_use_character()
     if tmp_use_chatbot == 1:
         persona = db.get_character_persona()[0]
