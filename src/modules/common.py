@@ -2,7 +2,9 @@ import streamlit as st
 from st_pages import Page, show_pages, add_page_title, hide_pages
 import const
 from modules import common
+from modules.database import database
 
+db = database.Database()
 
 def set_pages():
     # Set the pages
@@ -13,11 +15,17 @@ def set_pages():
     after_login_pages = [
         Page("src/other_pages/03_reset_password.py", "Reset password", "🔑"),
         Page("src/other_pages/04_change_icon.py", "Change icon", "👤"),
-        Page("src/other_pages/05_set_character.py", "Set character", "🤖"),
         Page("src/other_pages/06_chat.py", "Chat", "💬"),
         Page("src/other_pages/07_settings.py", "Settings", "⚙️"),
     ]
     pages = default_pages
+    
+    # Check if chatbot is enabled
+    current_use_chatbot = db.get_openai_settings_use_character()
+    if current_use_chatbot[0] == 1:
+        pages.append(Page("src/other_pages/05_set_character.py", "Set character", "🤖"))
+
+    # Check if user is logged in
     if (
         common.check_if_exists_in_session(const.SESSION_INFO_AUTH_STATUS)
         and st.session_state[const.SESSION_INFO_AUTH_STATUS]

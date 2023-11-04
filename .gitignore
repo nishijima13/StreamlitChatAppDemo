@@ -3,3 +3,4 @@ database.db
 .vscode
 memo.txt
 .DS_Store
+__pycache__

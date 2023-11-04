@@ -39,14 +39,14 @@ if (
             {"role": "system", "content": CHATBOT_PERSONA.format(persona=persona)}
         )
 
-    # Get chatbot settings
-    openai_api_key = os.getenv("OPENAI_API_KEY")
-    if openai_api_key is None:
-        openai.api_key = openai_api_key
-        persona = None
-        st.error(
-            "OPENAI_API_KEY is not set in the environment variables. Please contact the administrator."
-        )
+        # Get chatbot settings
+        openai_api_key = os.getenv("OPENAI_API_KEY")
+        if openai_api_key is None:
+            openai.api_key = openai_api_key
+            persona = None
+            st.error(
+                "OPENAI_API_KEY is not set in the environment variables. Please contact the administrator."
+            )
 
     user_infos = {}
     username = st.session_state[const.SESSION_INFO_USERNAME]
