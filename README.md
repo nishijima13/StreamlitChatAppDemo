@@ -13,7 +13,15 @@ Demo is as follows.
 ## Install
 
 ```bash
-pip install -r requirements.txt
+pip install -r build/requirements.txt
+```
+
+### Docker
+
+If you want to run with Docker, please build the image with the following command.
+```bash
+docker build -t streamlit_chat_app_demo build
+docker run -it --rm -p 8501:8501 -v $PWD:/home/workspace --name streamlit_chat_app_demo streamlit_chat_app_demo bash
 ```
 
 ## Setting
